@@ -1,0 +1,33 @@
+{
+  "name": "react-native-sockets",
+  "version": "0.0.1",
+  "description": "Socket server and client bindings for React Native (Android)",
+  "main": "index.android.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified yet\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidstoneham/react-native-sockets.git"
+  },
+  "keywords": [
+    "react-native-sockets",
+    "react-component",
+    "reactnative",
+    "react-native",
+    "sockets",
+    "android"
+  ],
+  "author": "David Stoneham",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davidstoneham/react-native-sockets/issues"
+  },
+  "homepage": "https://github.com/davidstoneham/react-native-sockets",
+  "peerDependencies": {
+    "react-native": ">=0.14.0"
+  },
+  "dependencies": {
+    "rnpm": "1.5.2"
+  }
+}
