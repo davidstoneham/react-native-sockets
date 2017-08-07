@@ -101,6 +101,10 @@ import Sockets from 'react-native-sockets';
     DeviceEventEmitter.addListener('socketServer_closed', (data) => {
       console.log('socketServer_closed',data.error);
     });
+    //on client disconnected
+    DeviceEventEmitter.addListener('socketServer_clientDisconnected', (data) => {
+      console.log('socketServer_clientDisconnected client id:', data.client);
+    });
 ```
 
 ### Client

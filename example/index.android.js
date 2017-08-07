@@ -81,6 +81,9 @@ export default class example extends Component {
       console.log('socketServer_closed', d);
       this.setState({ serverStatus: 'Disconnected' });
     });
+    DeviceEventEmitter.addListener('socketServer_clientDisconnected', (d) => {
+      console.log('socketServer_clientDisconnected', d);
+    });
 
   }
 

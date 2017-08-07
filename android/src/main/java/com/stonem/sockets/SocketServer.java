@@ -43,6 +43,7 @@ public class SocketServer {
     private final String event_error = "socketServer_error";
     private final String event_connect = "socketServer_connected";
     private final String event_clientConnect = "socketServer_clientConnected";
+    private final String event_clientDisconnect = "socketServer_clientDisconnected";
     private SparseArray<Object> mClients = new SparseArray<Object>();
     private int socketServerPORT;
     private ReactContext mReactContext;
@@ -161,6 +162,7 @@ public class SocketServer {
     private class SocketServerReplyThread extends Thread {
         private Socket hostThreadSocket;
         private int cId;
+        private boolean clientConnected = true;
 
         SocketServerReplyThread(Socket socket) {
             hostThreadSocket = socket;
@@ -172,24 +174,31 @@ public class SocketServer {
             try {
                 String data = "";
                 InputStream inputStream = hostThreadSocket.getInputStream();
-                while (isOpen) {
+                while (isOpen && clientConnected) {
                     int incomingByte = inputStream.read();
 
-                    if (incomingByte != -1) {
-                        if (incomingByte == EOT) {
-                            //debug log
-                            Log.d(eTag, "server received message: " + data);
-                            //emit event
-                            WritableMap eventParams = Arguments.createMap();
-                            eventParams.putInt("client", cId);
-                            eventParams.putString("data", data);
-                            sendEvent(mReactContext, event_data, eventParams);
-                            //clear incoming
-                            data = "";
-                        } else {
-                            data += (char) incomingByte;
-                        }
+                    if (incomingByte == -1) {
+                        clientConnected = false;
+                        //debug log
+                        Log.v(eTag, "Client disconnected");
+                        //emit event
+                        WritableMap eventParams = Arguments.createMap();
+                        eventParams.putInt("client", cId);
+                        sendEvent(mReactContext, event_clientDisconnect, eventParams);
+                    } else if (incomingByte == EOT) {
+                        //debug log
+                        Log.d(eTag, "client received message: " + data);
+                        //emit event
+                        WritableMap eventParams = Arguments.createMap();
+                        eventParams.putInt("client", cId);
+                        eventParams.putString("data", data);
+                        sendEvent(mReactContext, event_data, eventParams);
+                        //clear incoming
+                        data = "";
+                    } else {
+                        data += (char) incomingByte;
                     }
+
                 }
             } catch (IOException e) {
                 handleIOException(e);
@@ -212,4 +221,5 @@ public class SocketServer {
             sendEvent(mReactContext, event_error, eventParams);
         }
     }
+
 }
