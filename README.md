@@ -3,6 +3,8 @@ Java Socket Native Plugin for React Native for Android
 
 This is a basic implementation of Java sockets on Android allowing running a native socket server and client.
 
+Requires RN 0.47 or higher
+
 
 ## Features
 * No limit to length of messages sent between client and server
@@ -150,7 +152,7 @@ import Sockets from 'react-native-sockets';
     });
     //on new message
     DeviceEventEmitter.addListener('socketClient_data', (payload) => {
-      console.log('socketClient_data message:', payload.data);payload.client);
+      console.log('socketClient_data message:', payload.data);
     });
     //on client closed
     DeviceEventEmitter.addListener('socketClient_closed', (data) => {
