@@ -118,7 +118,7 @@ import Sockets from 'react-native-sockets';
 #### Connect to a socket server
 ```js
     config={
-        address: 192.168.1.1, //ip address of server
+        address: "192.168.1.1", //ip address of server
         port: 8080, //port of socket server
         reconnect:true, //OPTIONAL (default false): auto-reconnect on lost server
         reconnectDelay:500, //OPTIONAL (default 500ms): how often to try to auto-reconnect
