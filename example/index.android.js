@@ -119,10 +119,11 @@ export default class example extends Component {
   }
 
   pingServer() {
-    Sockets.isHostAvailable(this.state.ipAddress, 500, success => {
-      Alert.alert(this.state.ipAddress + " is available");
+    let ip = this.state.ipAddress;
+    Sockets.isHostAvailable(ip, 500, success => {
+      Alert.alert(ip + " is available");
     }, err => {
-      Alert.alert(this.state.ipAddress + " is not available", e);
+      Alert.alert(ip + " is not available", e);
     });
   }
 

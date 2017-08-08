@@ -120,17 +120,6 @@ public class SocketsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void isHostAvailable(String host, int timeout, Callback successCallback, Callback errorCallback) {
-        try {
-            InetAddress.getByName(host).isReachable(timeout);
-            successCallback.invoke(true);
-        } catch (IOException e) {
-            Log.e(eTag, "getIpAddress SocketException", e);
-            errorCallback.invoke(e.getMessage());
-        }
-    }
-
-    @ReactMethod
     public void isServerAvailable(String host, int port, Callback successCallback, Callback errorCallback) {
         Socket s = null;
         try {

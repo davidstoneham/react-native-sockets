@@ -177,18 +177,6 @@ Returns an array of ip address for the device.
     })
 ```
 
-#### Check host is available
-Pings an IP address to check if it is available on the network
-```js
-    ipAddress="192.168.1.1";
-    timeout=500;//timeout in ms to wait for host connection
-    Sockets.isHostAvailable(ipAddress,timeout,success=> {
-      console.log('Host is available');  
-    }, err => {
-      console.log('Host is not available');
-    })
-```
-
 #### Check server is available
 Checks if a socket server is available for connection on the network
 ```js
