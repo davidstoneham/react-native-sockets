@@ -182,7 +182,8 @@ Checks if a socket server is available for connection on the network
 ```js
     ipAddress="192.168.1.1";
     port=8080;
-    Sockets.isServerAvailable(ipAddress,port,success => {
+    timeout=1000; //milliseconds
+    Sockets.isServerAvailable(ipAddress,port,timeout,success => {
         Alert.alert("Socket server is available");
     }, err => {
         Alert.alert("Socket server is not available");

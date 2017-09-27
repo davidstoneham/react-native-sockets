@@ -128,7 +128,7 @@ export default class example extends Component {
   }
 
   serverAvailable() {
-    Sockets.isServerAvailable(this.state.ipAddress, this.port, success => {
+    Sockets.isServerAvailable(this.state.ipAddress, this.port, 1000, success => {
       Alert.alert("Socket server is available");
     }, err => {
       Alert.alert("Socket server is not available");

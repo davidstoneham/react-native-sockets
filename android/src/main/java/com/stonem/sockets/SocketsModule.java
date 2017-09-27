@@ -14,6 +14,7 @@ import com.facebook.react.bridge.WritableArray;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
@@ -120,10 +121,10 @@ public class SocketsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void isServerAvailable(String host, int port, Callback successCallback, Callback errorCallback) {
-        Socket s = null;
+     public void isServerAvailable(String host, int port, int timeOut, Callback successCallback, Callback errorCallback) {
+        final Socket s = new Socket();
         try {
-            s = new Socket(host, port);
+            s.connect(new InetSocketAddress(host, port), timeOut);
             successCallback.invoke(true);
         } catch (Exception e) {
             errorCallback.invoke(e.getMessage());
