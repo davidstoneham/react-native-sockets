@@ -120,6 +120,7 @@ import Sockets from 'react-native-sockets';
     config={
         address: "192.168.1.1", //ip address of server
         port: 8080, //port of socket server
+        timeout: 5000, // OPTIONAL (default 60000ms): timeout for response
         reconnect:true, //OPTIONAL (default false): auto-reconnect on lost server
         reconnectDelay:500, //OPTIONAL (default 500ms): how often to try to auto-reconnect
         maxReconnectAttempts:10, //OPTIONAL (default infinity): how many time to attemp to auto-reconnect
@@ -145,6 +146,10 @@ import Sockets from 'react-native-sockets';
     //on connected
      DeviceEventEmitter.addListener('socketClient_connected', () => {
       console.log('socketClient_connected');
+    });
+    //on timeout
+    DeviceEventEmitter.addListener('socketClient_timeout', (data) => {
+      console.log('socketClient_timeout',data.error);
     });
     //on error
     DeviceEventEmitter.addListener('socketClient_error', (data) => {
