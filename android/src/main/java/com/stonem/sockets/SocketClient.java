@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import java.io.ByteArrayOutputStream;
@@ -35,7 +36,9 @@ public class SocketClient {
     private final String event_closed = "socketClient_closed";
     private final String event_data = "socketClient_data";
     private final String event_error = "socketClient_error";
+    private final String event_timeout = "socketClient_timeout";
     private final String event_connect = "socketClient_connected";
+    private int timeout;
     private String dstAddress;
     private int dstPort;
     private ReactContext mReactContext;
@@ -55,6 +58,11 @@ public class SocketClient {
         mReactContext = reactContext;
         dstAddress = params.getString("address");
         dstPort = params.getInt("port");
+        if (params.hasKey("timeout")) {
+            timeout = params.getInt("timeout");
+        } else {
+            timeout = 60000;
+        }
         if (params.hasKey("reconnect")) {
             reconnectOnClose = params.getBoolean("reconnect");
         }
@@ -152,7 +160,10 @@ public class SocketClient {
 
     private boolean connectSocket() {
         try {
-            clientSocket = new Socket(dstAddress, dstPort);
+            int connectionTimeout = 1000;
+            clientSocket = new Socket();
+            clientSocket.connect(new InetSocketAddress(dstAddress, dstPort), connectionTimeout);
+            clientSocket.setSoTimeout(timeout);
             isOpen = true;
 
             WritableMap eventParams = Arguments.createMap();
@@ -193,6 +204,8 @@ public class SocketClient {
                     data += (char) incomingByte;
                 }
             }
+        } catch (SocketTimeoutException e) {
+            handleSocketTimeoutException(e);
         } catch (IOException e) {
             handleIOException(e);
         }
@@ -221,6 +234,16 @@ public class SocketClient {
         WritableMap eventParams = Arguments.createMap();
         eventParams.putString("error", e.getMessage());
         sendEvent(mReactContext, event_error, eventParams);
+    }
+
+    private void handleSocketTimeoutException(SocketTimeoutException e) {
+        //debug log
+        Log.e(eTag, "Client SocketTimeoutException", e);
+        //emit event
+        String message = e.getMessage();
+        WritableMap eventParams = Arguments.createMap();
+        eventParams.putString("error", e.getMessage());
+        sendEvent(mReactContext, event_timeout, eventParams);
     }
 
 }
