@@ -1,6 +1,6 @@
 {
   "name": "react-native-sockets",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Socket server and client bindings for React Native (Android)",
   "main": "index.android.js",
   "scripts": {
