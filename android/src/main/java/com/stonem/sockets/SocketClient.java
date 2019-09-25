@@ -190,6 +190,7 @@ public class SocketClient {
                     isOpen = false;
                     //emit event
                     WritableMap eventParams = Arguments.createMap();
+                    eventParams.putString("data", data);
                     sendEvent(mReactContext, event_closed, eventParams);
                 } else if (incomingByte == EOT) {
                     //debug log
